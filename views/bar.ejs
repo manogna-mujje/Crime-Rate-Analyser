@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Using Canvas</title>
+    <style>
+        body {
+            background-color: ivory;
+        }
+
+        canvas {
+            border: 1px solid red;
+        }
+    </style>
+         <script type="text/javascript"  src="/js/navbar.js"></script>
+</head>
+
+<body>
+    <div id="mainsection" style="margin-top: 150px;" align="middle">
+    <div>
+        <span>Crime Type: </span>
+    <select id="crimes" onchange="change()">
+        </select>
+    </div>
+    <div style="margin-top: 20px;">
+    <canvas id="canvas" width=350 height=350></canvas>
+</div>
+</div>
+    <script type='text/javascript'>
+    
+
+        var rows =<%-JSON.stringify(grouped) %>
+            console.log("grouped data is " + JSON.stringify(rows));
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var crime_types =<%-JSON.stringify(crime_types) %>
+
+        crime_types.forEach(type => {
+
+        var option = document.createElement("option");
+    option.text = type;
+    option.value = type;
+    var select = document.getElementById("crimes");
+    select.appendChild(option);
+        });
+
+        var skillBars = [];
+        
+        var selected_crime="BATTERY";
+        function change(){
+            selected_crime = document.getElementById('crimes').value;
+            console.log(selected_crime);
+            skillBars.pop();
+            skillBars.pop();
+            //var skillBars = [];
+            if (rows[selected_crime][0]) {
+                if (rows[selected_crime][0]["Arrest"] === "TRUE") {
+                    skillBars.push({
+                        Arrest: rows[selected_crime][0]["Arrest"],
+                        count: rows[selected_crime][0]["count"],
+                        color: "blue"
+                    });
+                }
+                else {
+                    skillBars.push({
+                        Arrest: rows[selected_crime][0]["Arrest"],
+                        count: rows[selected_crime][0]["count"],
+                        color: "red"
+                    });
+                }
+
+                if (rows[selected_crime][1]) {
+                    if (rows[selected_crime][1]["Arrest"] === "TRUE") {
+                        skillBars.push({
+                            Arrest: rows[selected_crime][1]["Arrest"],
+                            count: rows[selected_crime][1]["count"],
+                            color: "blue"
+                        });
+                    }
+                    else {
+                        skillBars.push({
+                            Arrest: rows[selected_crime][1]["Arrest"],
+                            count: rows[selected_crime][1]["count"],
+                            color: "red"
+                        });
+                    }
+                }
+                else {
+                    skillBars.push({
+                        Arrest: (rows[selected_crime][0] === "TRUE") ? "FALSE" : "TRUE",
+                        count: 0,
+                        color: (rows[selected_crime][0] === "TRUE") ? "red" : "blue"
+                    });
+                }
+            }
+            else {
+                skillBars.push({
+                    Arrest: "TRUE",
+                    count: 0,
+                    color: "blue"
+                });
+                skillBars.push({
+                    Arrest: "FALSE",
+                    count: 0,
+                    color: "red"
+                });
+            }
+            var chartBottomY = 325;
+        var chartBarWidth = 30;
+        var chartBarPadding = 20;
+        var percent = 0;
+
+        animate();
+        }
+        var skillBars = [];
+            if (rows[selected_crime][0]) {
+                if (rows[selected_crime][0]["Arrest"] === "TRUE") {
+                    skillBars.push({
+                        Arrest: rows[selected_crime][0]["Arrest"],
+                        count: rows[selected_crime][0]["count"],
+                        color: "blue"
+                    });
+                }
+                else {
+                    skillBars.push({
+                        Arrest: rows[selected_crime][0]["Arrest"],
+                        count: rows[selected_crime][0]["count"],
+                        color: "red"
+                    });
+                }
+
+                if (rows[selected_crime][1]) {
+                    if (rows[selected_crime][1]["Arrest"] === "TRUE") {
+                        skillBars.push({
+                            Arrest: rows[selected_crime][1]["Arrest"],
+                            count: rows[selected_crime][1]["count"],
+                            color: "blue"
+                        });
+                    }
+                    else {
+                        skillBars.push({
+                            Arrest: rows[selected_crime][1]["Arrest"],
+                            count: rows[selected_crime][1]["count"],
+                            color: "red"
+                        });
+                    }
+                }
+                else {
+                    skillBars.push({
+                        Arrest: (rows[selected_crime][0] === "TRUE") ? "FALSE" : "TRUE",
+                        count: 0,
+                        color: (rows[selected_crime][0] === "TRUE") ? "red" : "blue"
+                    });
+                }
+            }
+            else {
+                skillBars.push({
+                    Arrest: "TRUE",
+                    count: 0,
+                    color: "blue"
+                });
+                skillBars.push({
+                    Arrest: "FALSE",
+                    count: 0,
+                    color: "red"
+                });
+            }
+        var chartBottomY = 310;
+        var chartBarWidth = 50;
+        var chartBarPadding = 100;
+        var percent = 0;
+
+        animate();
+
+        var fps = 1;
+
+        function animate() {
+            // if not 100% done, request another frame
+            if (percent++ < 100) {
+                requestAnimationFrame(animate);
+            }
+
+            // Drawing code goes here
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var x = chartBarPadding;
+            for (var i = 0; i < skillBars.length; i++) {
+                ctx.font = "10pt Arial";
+                var height = skillBars[i].count * percent / 10;
+                ctx.fillStyle = skillBars[i].color;
+                ctx.fillRect(x, chartBottomY, chartBarWidth, -height);
+                    ctx.fillText(skillBars[i].count, x + 20, chartBottomY - height - 5);
+                    var x_pointer;
+                            ctx.fillText((skillBars[i].Arrest === "TRUE") ? "Arrested" : "Not Arrested", (i === 0) ? 90 : 250,323);
+                x += chartBarWidth + chartBarPadding;
+            }
+        }
+    </script>
+</body>
+
+</html>

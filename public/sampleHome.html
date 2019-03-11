@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> "Home Page" </title>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+    <script type="text/javascript" src="/js/navbar.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <link href = "https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#tabs").tabs({
+                beforeLoad: function (event, ui) {
+                    ui.jqXHR.fail(function () {
+                        ui.panel.html(
+                            "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+                            "If this wouldn't be a demo.");
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var context;
+        var text = "";
+        var textDirection = "";
+
+        $(function () {
+            context = document.getElementById("canvas").getContext("2d");
+            setInterval("animate()", 50);
+
+            textDirection = "right";
+            textXpos = 5;
+            text = "Chicago's Crime Rate Analyzer";
+        });
+
+        //function to animate the text in the homepage
+        function animate() {
+            context.clearRect(0, 0, 1000, 200);
+            context.globalAlpha = 1;
+
+            // Create gradient
+            var grd = context.createRadialGradient(75, 50, 20, 90, 60, 100);
+            grd.addColorStop(0, "red");
+            grd.addColorStop(1, "white");
+
+            // Fill with gradient
+            context.fillStyle = grd;
+           // context.fillStyle = 'lightgoldenrodyellow';
+            context.fillRect(0, 0, 1000, 200);
+
+            var metrics = context.measureText(text);
+            var textWidth = metrics.width;
+
+            if (textDirection == "right") {
+                textXpos += 10;
+
+                if (textXpos > 1000 - textWidth) {
+                    textDirection = "left";
+                }
+            }
+            else {
+                textXpos -= 10;
+
+                if (textXpos < 200) {
+                    textDirection = "right";
+                }
+            }
+
+            context.font = '40px Comic Sans MS';
+            context.fillStyle = '#FF0000';
+            context.fillText(text, textXpos, 110);
+        }    
+    </script>
+</head>
+
+<body id="homepage">
+    <div>
+        <canvas id="canvas" width="1000" height="200" style="margin-top: 200px">
+            Your browser does not support the HTML 5 Canvas.
+        </canvas>
+    </div>
+    <h2 id=home-head>Types of Chicago's Crime Rate Analysis</h2>
+
+  
+    <div id="tabs">
+        <ul>
+            <li><a href="http://localhost:3000/locationwiselinks.html">Location Wise Report</a></li>
+            <li><a href="http://localhost:3000/yoyCrimeRateslink.html">Yearly Crime Rate Analysis Report</a></li>
+            <li><a href="http://localhost:3000/lawenforcementlink.html">Law Enforcement Effectiveness Report</a></li>
+            <li><a href="http://localhost:3000/feedbacklink.html">Feedback page</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

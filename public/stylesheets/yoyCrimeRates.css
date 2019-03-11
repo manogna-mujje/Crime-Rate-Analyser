@@ -1,0 +1,60 @@
+.header {
+    text-align: center;
+    margin-top: 100px;
+    color: white;
+    font-weight: bolder;
+}
+
+.row {
+    margin-top: 200px;
+}
+
+.form-control {
+    width: 200px;
+    margin-left: -100px;
+}
+
+.text1 {
+    margin-left: 200px;
+    color: white;
+}
+
+.text2 {
+    margin-left: 100px;
+    color: white;
+}
+
+.chart {
+    height: 350px;
+    width: 80%;
+    margin-top: 50px;
+    margin-left: 140px;
+}
+
+body {
+    background-image: url("/crime4.jpg");
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    background-size: 1500px 800px;
+}
+
+#droppable {
+    position: absolute;
+    left: 250px;
+    top: 0;
+    width: 700px;
+    height: 125px;
+    background: #feeebd ;
+    color: #fff;
+    padding: 10px;
+    margin-top: 100px;
+    margin-left: 100px;
+    border: solid 2px red;
+}
+
+#slider-range {
+    width: 1000px;
+    left: 19%;
+    margin-top: 50px;
+}

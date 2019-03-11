@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <title> Feedback Form JQuery Attached</title>
+            <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.css"/>
+            <link rel="stylesheet" type="text/css" href="/stylesheets/feedback.css" />
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            <script type="text/javascript"  src="/js/datepicker.js"></script>
+            <script type="text/javascript" src="/js/navbar.js"></script>
+    </head>
+
+
+    <body>
+    <h1> Feedback Form for Chichago Crime Rate Analysis </h1> 
+    <form action="/feedback" class="formsubmit" method="POST">     
+    <fieldset class="field">
+               <label for="firstname">First Name <br>    <input type="text" name="firstname" size="35" class="ui-widget input" required>
+                <br><br>
+                <label for="lastname">Last Name <br> <input type ="text" name="lastname" size="35" class="ui-widget input" required>
+                <br><br>
+                <label for="email">Email <br> <input type ="text" name="email" oninput="emailValidation(email.value)"size="35" class="ui-widget input" required>
+                <p id="email"> </p>
+                <label for="location">Location <br> <input type ="text" name="location" size="35" class="ui-widget input" required>
+                <br><br>
+                <label for="datepicker">Date <br><input type="text" id="datepicker" name="datepicker" size="35" required>
+                <br><br>
+          
+                <textarea rows="4" cols="50" name="comment" class="ui-widget textarea"> Enter your comments text here..</textarea>
+                
+    </fieldset>
+
+    <br><br>
+    <input type="submit" value="Submit" class="ui-button">
+    </form>
+    <div id="progressbar"></div>
+ 
+    <script>
+    $( "#progressbar" ).progressbar({
+    value: 0,
+    max: 30
+    });
+    </script>
+    </body>
+
+    <script>
+    $("input").change(function (){
+        var temp = $( "#progressbar" ).progressbar("value");
+        $( "#progressbar" ).progressbar({value: temp+10})
+    });
+    </script>
+
+
+    <script>
+    function emailValidation(email){
+         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+         var x = re.test(email);
+         if(re.test(email)){
+             x = "correct";
+         }
+         else{
+             x = "not correct";
+         }
+         document.getElementById("email").innerHTML = "Email is: " + x;
+
+    }
+    </script>
+</html>

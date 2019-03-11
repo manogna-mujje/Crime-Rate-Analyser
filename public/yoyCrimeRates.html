@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Year on Year crime report for the city of Chicago</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/datepicker.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/yoyCrimeRates.css">
+    <script type="text/javascript" src="/js/navbar.js"></script>
+</head>
+
+<body class="crimebody">
+    <div id="droppable"></div>
+
+    <canvas id="myCanvas" width="700" height="100" style="margin-top: -40px; margin-left: 700px;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <div id="dialog" title="Instructions">
+        <p>Drag the title and drop into the box below it. The box is resizable and also draggable.
+            Enter the start year and end year such that a graph will be displayed which is also draggable.
+            The dialog window can be moved, resized and closed with the 'x' icon.
+            Click on the checkbox for the window to disappear.
+        </p>
+    </div>
+
+    <div class="row">
+
+        <div id="text1" class="text1 col-xs-2">
+            <h4>Enter Start Year</h4>
+        </div>
+        <div class="dropdown col-xs-2">
+            <select id="startYearDropdown" name="startyear" class="form-control" onchange="startYearDropdown()">
+                <option value="0">Enter Start Year</option>
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+                <option value="2003">2003</option>
+                <option value="2004">2004</option>
+                <option value="2005">2005</option>
+                <option value="2006">2006</option>
+                <option value="2007">2007</option>
+                <option value="2008">2008</option>
+                <option value="2009">2009</option>
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012">2012</option>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+            </select>
+        </div>
+        <div class="text2 col-xs-2">
+            <h4>Enter End Year</h4>
+        </div>
+        <div id="endyeardropdown" class="dropdown col-xs-2">
+            <select id="endYearDropdown" name="endyear" class="form-control" onchange="endYearDropdown()">
+                <option value="0">Enter End Year</option>
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+                <option value="2003">2003</option>
+                <option value="2004">2004</option>
+                <option value="2005">2005</option>
+                <option value="2006">2006</option>
+                <option value="2007">2007</option>
+                <option value="2008">2008</option>
+                <option value="2009">2009</option>
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012">2012</option>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <div id="slider-range"></div> <br>
+    <div id="chartContainer" class="chart"></div>
+
+    <script>
+        $('#myCanvas').draggable();
+        $("#chartContainer").draggable();
+        $("#droppable").draggable();
+        $("#droppable").droppable({
+            drop: function () {
+                alert("Title is dropped in the right place");
+            }
+        });
+        $("#droppable").resizable();
+
+        $(function () {
+            $("#dialog").dialog();
+        });
+    </script>
+</body>
+
+<script>
+    //Header text animation using HTML5 canvas
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    ctx.font = "40px Arial";
+    ctx.strokeStyle = "violet";
+    ctx.fillStyle = "violet";
+    ctx.strokeText("Chicago's Yearly Crime Rate Analysis", 5, 90);
+
+    function startYearDropdown() {
+        //Getting Value
+        var selObj = document.getElementById("startYearDropdown");
+        var selValue = selObj.options[selObj.selectedIndex].text;
+
+        localStorage.setItem("year", selValue);
+        sessionStorage.year = selValue
+    }
+
+    //function to validate the End year
+    function endYearDropdown() {
+        //Getting Value
+        var selObj1 = document.getElementById("endYearDropdown");
+        var selValue1 = selObj1.options[selObj1.selectedIndex].text;
+
+        //Setting Value
+        var startYear = sessionStorage.year;
+        sessionStorage.endYear = selValue1;
+
+        //Prompt an error message if the Start year is greater than the end year
+        if (Number(startYear) > Number(selValue1)) {
+            alert("Start Year should be less than or equal to End year");
+        } else {
+            console.log(selValue1);
+            var yearArr = [];
+            for (var ctr = 0; startYear <= selValue1; ctr++) {
+                yearArr[ctr] = startYear;
+                startYear++;
+            }
+            console.log(yearArr);
+            loadCharts(yearArr);
+        }
+    }
+
+    //Code to draw graph
+    function loadCharts(yearArr) {
+        var valueArr = [1000, 360, 500, 480, 950, 400, 780, 260, 170, 560, 290, 603, 900, 149, 240, 560, 290, 603];
+
+        var finalArr = [];
+        for (var ctr = 0; ctr < yearArr.length; ctr++) {
+            var obj = { x: yearArr[ctr], y: valueArr[ctr] };
+            finalArr[ctr] = obj;
+            console.log(finalArr);
+        }
+        console.log(finalArr);
+        var dps = finalArr;
+        console.log("Values: ", dps);
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                text: "Number of Crimes per year in the city of Chicago"
+            },
+            axisX: {
+                title: "Year"
+            },
+            axisY: {
+                title: "Number of Crimes"
+            },
+            data: [{
+                type: "bar",
+                dataPoints: dps
+            }]
+        });
+
+        chart.render();
+    }
+</script>
+<script>
+    $( function() {
+        $( "#slider-range" ).slider({
+        range: true,
+        min: 2001,
+        max: 2018,
+        values: [ 2005, 2008 ],
+        slide: function( event, ui ) {
+            $( "#startYearDropdown" ).val( ui.values[0] );
+            $( "#endYearDropdown" ).val( ui.values[1] );
+            startYearDropdown();
+            endYearDropdown();
+        }
+        });
+        $( "#startYearDropdown" ).val( $( "#slider-range" ).slider("values", 0));
+        $( "#endYearDropdown" ).val($( "#slider-range" ).slider("values", 1));
+        startYearDropdown();
+        endYearDropdown();
+    } );
+</script>
+
+</html>

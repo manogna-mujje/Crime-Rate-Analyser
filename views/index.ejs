@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head >
+     <% include partials/head %> 
+     <% include partials/script %>
+     <link rel="stylesheet" type="text/css" href="stylesheets/main.css"/>
+    <script type="text/javascript"  src="/js/navbar.js"></script>
+    <link href = "https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function() {
+            $( "#accordion-1" ).accordion({
+                collapsible: true,
+                heightStyle: "content"
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2 class="locationwise" id="title">Chicago's Location Wise Crime Rate Analysis</h2>
+    <div id="form">
+    <form action=http://localhost:3000/locationFilter method="POST" name="form" class="form-content">
+        <span style="color:white">Enter Zip Code</span><br> <br>
+        <select id="zip" name='zipcode'>
+          <option value="Default">Default</option>
+          <option value="60007">60007</option>
+          <option value="60176">60176</option>
+          <option value="60603">60603</option>
+          <option value="60607">60607</option>
+          <option value="60611">60611</option>
+          <option value="60619">60619</option>
+          <option value="60623">60623</option>
+        </select>
+        <br><br>
+        <input type="submit" id="submit" value="Submit"  onclick="msg()">
+    </form> <br>
+    </div>
+    <div class="result"></div>
+    <h3 id=home-head> Types of Crimes </h3>
+    <div id = "accordion-1">
+            <h3>Criminal Damage</h3>
+            <div>
+                <p>
+                    A person who without lawful excuse destroys or damages any property belonging to another intending to destroy or damage any such property or being reckless as to whether any such property would be destroyed or damaged shall be guilty of an offence.
+                </p>
+            </div>
+            <h3>Battery</h3>
+            <div>
+                <p>
+                    Battery is a criminal offense involving the unlawful physical acting upon a threat, distinct from assault which is the act of creating apprehension of such contact.
+                </p>
+            </div>
+            <h3>Theft</h3>
+            <div>
+                <p>
+                    In common usage, theft is the taking of another person's property or services without that person's permission or consent with the intent to deprive the rightful owner of it.  Theft includes some crimes against property, such as burglary, embezzlement, larceny, looting, robbery, shoplifting, library theft, and fraud.
+                </p>
+            </div>
+            <h3>Weapons Violation</h3>
+            <div>
+                <p>
+                    Violating a weapons regulation can result in severe penalties, including imprisonment and fines. Gun laws and other weapons laws regulate all aspects pertaining to weapons, including: Possession, Licensing, Carrying,  Transporting, Use, Sale, Manufacturing, Importation.
+                </p>
+            </div>
+            <h3>Robbery</h3>
+            <div>
+                <p>
+                    Robbery is the crime of taking or attempting to take anything of value by force, threat of force, or by putting the victim in fear. According to common law, robbery is defined as taking the property of another, with the intent to permanently deprive the person of that property, by means of force or fear; that is, it is a larceny or theft accomplished by an assault.    
+                </p>
+            </div>
+            <h3>Motor Vehicle Theft</h3>
+            <div>
+                <p>
+                    Motor vehicle theft is the criminal act of stealing or attempting to steal a motor vehicle.    
+                </p>
+            </div>
+            <h3>Other offenses</h3>
+            <div>
+                <p>
+                    Other offenses include murders, rapes and violation of human acts.
+                </p>
+            </div>
+    </div> <br> <br>
+    <div id="chartContainer" style="height: 200px;"></div>
+    <script type="text/javascript">
+        if(<%=isResponse%>){
+            var zip = <%=zipcode%>;
+            var data = (<%=JSON.stringify(data)%>).toString().split(",");
+            var chart = new CanvasJS.Chart("chartContainer", {
+            title:{
+                text: "Percentage Comparison of diiferent crime types in the area with zipcode - " + zip           
+            },
+            data: [              
+                {
+                    type: "column",
+                    dataPoints: [
+                        { label: "Criminal Damage",  y: parseInt(data[0])  },
+                        { label: "Battery", y: parseInt(data[1])  },
+                        { label: "Theft",  y: parseInt(data[3])  },
+                        { label: "Weapons Violation",  y: parseInt(data[4])  },
+                        { label: "Robbery",  y: parseInt(data[5])  },
+                        { label: "Motor Vehicle Theft",  y: parseInt(data[6])  },
+                        { label: "Other offenses", y: parseInt(data[2])  }
+                    ]
+                }
+            ]
+            });
+            chart.render();
+        }
+    </script>
+</body>
+
+</html>

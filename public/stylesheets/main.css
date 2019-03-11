@@ -1,0 +1,52 @@
+body {
+    background-image: url("/crime4.jpg");
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: Arial;
+    background-size: 1500px 800px;
+}
+
+.homepage {
+    background-color: lightgoldenrodyellow;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: Arial;
+    background-size: 1500px 800px;
+}
+#homeHeader{
+    margin-top: 250px;
+    color: white;
+    font-size: 40px;
+}
+
+.locationwise {
+    color: white;
+    position: relative;
+    top: 100px;
+    left: 100 px;
+}
+
+#form {
+    position: relative;
+    top: 80px;
+    left: 100 px;
+}
+
+#canvas{
+    border:2px solid orangered !important;
+}
+
+#accordion-1{
+    padding-top: 20px;
+    width: 500px;
+    left: 33%;
+    position: absolute;
+    font-size: 14px;
+}
+
+#home-head {
+    color: white;
+}
+    
